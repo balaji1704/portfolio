@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pati Sri Sai Balaji | Portfolio</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0d0d0d;
+      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow-x: hidden;
+      position: relative;
+      transition: background 1s ease-in-out;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    body.light-on {
+      background-image: url('mybackground.png');
+    }
+
+    .bulb-wrapper {
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: none;
+      animation: swing 3s ease-in-out infinite;
+      transform-origin: top center;
+      z-index: 2;
+    }
+
+    .wire {
+      width: 20px;
+      height: 60px;
+      background: linear-gradient(90deg, #222 0%, #444 50%, #222 100%);
+      margin: 0 auto;
+      border-radius: 10px;
+      box-shadow: inset 0 0 5px #000;
+    }
+
+    .pendent-holder {
+      width: 80px;
+      height: 50px;
+      background: linear-gradient(135deg, #555 0%, #222 100%);
+      border-radius: 15px 15px 5px 5px;
+      margin: 0 auto;
+      position: relative;
+      top: 10px;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.7);
+      z-index: 3;
+      border: 2px solid #444;
+    }
+
+    .incandescent-bulb {
+      width: 70px;
+      height: 110px;
+      background: radial-gradient(circle at 50% 40%, #fffbe6, #ffde8a 70%, #c7a348 90%);
+      border-radius: 50% 50% 40% 40% / 60% 60% 40% 40%;
+      margin: -30px auto 0;
+      box-shadow: 0 0 50px 20px rgba(255, 236, 179, 0.9),
+                  inset 0 15px 30px rgba(255, 255, 224, 0.9);
+      position: relative;
+      z-index: 2;
+      border: 1.5px solid #aa8f55;
+    }
+
+    .filament {
+      position: absolute;
+      top: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 8px;
+      height: 35px;
+      background: linear-gradient(180deg, #ffe066 0%, #d98e00 100%);
+      border-radius: 4px;
+      box-shadow: 0 0 25px 8px rgba(255, 200, 50, 0.95),
+                  inset 0 6px 10px #ffd84d;
+      animation: flicker 1.2s infinite alternate;
+      z-index: 5;
+    }
+
+    .filament::before,
+    .filament::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      width: 3px;
+      height: 30px;
+      background: linear-gradient(180deg, #b07b2c 0%, #654311 100%);
+      border-radius: 2px;
+    }
+
+    .filament::before {
+      left: -8px;
+      transform: rotate(15deg);
+    }
+
+    .filament::after {
+      right: -8px;
+      transform: rotate(-15deg);
+    }
+
+    @keyframes flicker {
+      0% {
+        box-shadow: 0 0 40px 12px rgba(255, 220, 60, 1),
+                    inset 0 6px 10px #ffdb4d;
+        background: linear-gradient(180deg, #fff974 0%, #d99a0b 100%);
+      }
+      100% {
+        box-shadow: 0 0 20px 6px rgba(255, 190, 40, 0.6),
+                    inset 0 5px 8px #e0c67a;
+        background: linear-gradient(180deg, #ffe38a 0%, #b78c3d 100%);
+      }
+    }
+
+    @keyframes swing {
+      0% { transform: translateX(-50%) rotate(-3deg); }
+      50% { transform: translateX(-50%) rotate(3deg); }
+      100% { transform: translateX(-50%) rotate(-3deg); }
+    }
+
+    .bulb-glow {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1000px;
+      height: 1000px;
+      background: radial-gradient(circle at center, rgba(255, 230, 160, 0.5) 0%, transparent 70%);
+      z-index: 0;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1s ease-in-out;
+      filter: blur(40px);
+    }
+
+    .bulb-glow.on {
+      opacity: 1;
+    }
+
+    .container {
+      text-align: center;
+      padding: 150px 20px 80px;
+      z-index: 10;
+      position: relative;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .toggle {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #444;
+      border: 2px solid #fff;
+      width: 60px;
+      height: 34px;
+      border-radius: 34px;
+      cursor: pointer;
+      z-index: 999;
+    }
+
+    .toggle::before {
+      content: "";
+      position: absolute;
+      width: 26px;
+      height: 26px;
+      left: 4px;
+      top: 4px;
+      background-color: white;
+      border-radius: 50%;
+      transition: transform 0.3s;
+    }
+
+    .toggle.on::before {
+      transform: translateX(26px);
+    }
+
+    .section {
+      margin: 40px 0;
+      opacity: 0;
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      transform: translateY(20px);
+    }
+
+    .section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .resume-btn {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 10px 20px;
+      background-color: #ffaa00;
+      color: #000;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .resume-btn:hover {
+      background-color: #ffc83d;
+      transform: scale(1.05);
+    }
+
+    #offMessage {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #ffaa00;
+      font-size: 1.8rem;
+      font-weight: bold;
+      text-align: center;
+      opacity: 1;
+      transition: opacity 0.8s ease;
+      pointer-events: none;
+      z-index: 998;
+    }
+
+    /* ✅ Responsive for phones */
+    @media (max-width: 768px) {
+      .container {
+        padding: 100px 10px 60px;
+      }
+
+      .resume-btn {
+        font-size: 1rem;
+        padding: 8px 16px;
+      }
+
+      .incandescent-bulb {
+        width: 50px;
+        height: 80px;
+      }
+
+      .bulb-glow {
+        width: 600px;
+        height: 600px;
+      }
+
+      #offMessage {
+        font-size: 1.3rem;
+        padding: 0 10px;
+      }
+
+      .toggle {
+        width: 50px;
+        height: 30px;
+      }
+
+      .toggle::before {
+        width: 22px;
+        height: 22px;
+        left: 4px;
+        top: 4px;
+      }
+
+      .toggle.on::before {
+        transform: translateX(20px);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bulb-wrapper" id="bulbWrapper">
+    <div class="wire"></div>
+    <div class="pendent-holder"></div>
+    <div class="incandescent-bulb">
+      <div class="filament"></div>
+    </div>
+  </div>
+
+  <div class="bulb-glow" id="bulbGlow"></div>
+
+  <div class="container">
+    <h1 id="name" class="section">Pati Sri Sai Balaji</h1>
+    <a href="Pati_Sri_Sai_Balaji_Resume.pdf" download class="resume-btn section">Download Resume</a>
+    <p id="tagline" class="section">Creative Tech-Mind Exploring Power Electronics and Smart Energy</p>
+
+    <div id="about" class="section">
+      <h2>About Me</h2>
+      <p>I'm currently pursuing my degree in Electrical and Electronics Engineering. I’m passionate about power systems, embedded systems, VLSI design, AutoCAD, renewable energy technologies, and electric vehicles (EVs). I enjoy exploring how modern electronics can help build a more sustainable and efficient future.</p>
+    </div>
+
+    <div id="skills" class="section">
+      <h2>Skills</h2>
+      <ul style="list-style:none; padding:0;">
+        <li>MATLAB</li>
+        <li>VLSI Design</li>
+        <li>Verilog HDL</li>
+        <li>AutoCAD</li>
+        <li>Embedded Systems</li>
+      </ul>
+    </div>
+
+    <div id="internships" class="section">
+      <h2>Internships and Certifications</h2>
+      <ul style="list-style: none; padding-left: 0;">
+        <li><strong>NPTEL: System Design through Verilog</strong> – 8-week</li>
+        <li><strong>IIDT & Black Bucks: Embedded Systems and IoT</strong> – 8-week</li>
+        <li><strong>APTRANSCO: Electrical Transmission</strong> – 24-week</li>
+        <li><strong>NPTEL: FACTS Devices</strong> – 8-week</li>
+      </ul>
+    </div>
+
+    <div id="projects" class="section">
+      <h2>Projects</h2>
+      <p><strong>Wireless-Controlled Dry-Type Solar Panel Cleaner</strong><br>
+        Designed a wireless-controlled robot to clean solar panels without water, enhancing energy efficiency.<br>
+        <a href="https://github.com/balaji1704/Wireless-controlled-dry-type-Solar-panel-cleaner" target="_blank" style="color:lightblue">GitHub Link</a>
+      </p>
+      <p><strong>Innovating for Sustainability: Smart Resource Conservation</strong><br>
+        Developed a smart system to optimize the energy and water usage in home appliances.<br>
+        <a href="https://github.com/balaji1704/-Innovating-for-Sustainability-Driving-Smart-Resource-Conservation-Energy-Water-in-Home-Appliances-" target="_blank" style="color:lightblue">GitHub Link</a>
+      </p>
+    </div>
+
+    <div id="education" class="section">
+      <h2>Education</h2>
+      <p><strong>B.Tech in EEE</strong>, SRKR Engineering College (2023–2026)<br>CGPA: 8.1</p>
+      <p><strong>Diploma in EEE</strong>, SMVM Polytechnic (2020–2023)</p>
+    </div>
+
+    <div id="contact" class="section">
+      <h2>Contact</h2>
+      <p>Email: pssbalaji04@gmail.com</p>
+      <p>Phone: +91 94935 41966</p>
+      <p>GitHub: <a href="https://github.com/balaji1704" target="_blank" style="color:lightblue">balaji1704</a></p>
+    </div>
+  </div>
+
+  <div id="offMessage">Turn on to see portfolio</div>
+
+  <div class="toggle" id="toggleSwitch" onclick="togglePower()"></div>
+
+  <script>
+    let isOn = false;
+    const sections = document.querySelectorAll('.section');
+    const bulbWrapper = document.getElementById('bulbWrapper');
+    const toggle = document.getElementById('toggleSwitch');
+    const bulbGlow = document.getElementById('bulbGlow');
+    const offMessage = document.getElementById('offMessage');
+
+    function togglePower() {
+      isOn = !isOn;
+      bulbWrapper.style.display = isOn ? 'block' : 'none';
+      toggle.classList.toggle('on', isOn);
+      bulbGlow.classList.toggle('on', isOn);
+      document.body.classList.toggle('light-on', isOn);
+
+      sections.forEach(section => {
+        section.classList.toggle('visible', isOn);
+      });
+
+      offMessage.style.opacity = isOn ? '0' : '1';
+    }
+
+    window.onload = () => {
+      if (!isOn) {
+        offMessage.style.opacity = '1';
+      }
+    };
+  </script>
+</body>
+</html>
